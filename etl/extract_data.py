@@ -1,5 +1,4 @@
 import pandas as pd
-from yahoo_fin import stock_info
 import yfinance as yf
 
 # Fundamental data columns to be selected
@@ -30,7 +29,7 @@ def extract_technical_data(start_date, end_date):
         # Convert "Date" from index to a normal column as it will have duplicates for different stocks
         technical_df.reset_index(inplace=True)
     except Exception as e:
-        print("Error resetting index of technical dataframe")
+        print(f"Error resetting index of technical dataframe: {e}")
 
     return technical_df
 
@@ -77,7 +76,7 @@ def extract_historical_fundamental_data(start_date, end_date):
         fundamental_df.rename(columns={"index": "Date"}, inplace=True)
         fundamental_df["Date"] = pd.to_datetime(fundamental_df["Date"])
     except Exception as e:
-        print("Error resetting index of historical fundamental dataframe")
+        print(f"Error resetting index of historical fundamental dataframe: {e}")
 
     return fundamental_df
 
@@ -123,7 +122,7 @@ def extract_yesterdays_fundamental_data():
         # Remove old Date index as it will be replaced with yesterday's date through the loop
         yesterday_fundamental_df.reset_index(inplace=True, drop=True)
     except Exception as e:
-        print("Error resetting index of yesterday's fundamental dataframe")
+        print(f"Error resetting index of yesterday's fundamental dataframe: {e}")
 
     return yesterday_fundamental_df
 
