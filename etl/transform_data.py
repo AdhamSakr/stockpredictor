@@ -18,6 +18,14 @@ def set_date_as_index(df):
     return df
 
 
+def reset_index(df):
+    try:
+        df.reset_index(inplace=True)
+    except Exception as e:
+        print(f"Error occured while resetting dataframe index: {e}")
+    return df
+
+
 def change_column_datatypes(sp500_df):
     try:
         sp500_df["Basic EPS"] = sp500_df["Basic EPS"].astype("float64")
