@@ -5,6 +5,7 @@ from sqlalchemy import create_engine
 def load_dataframe_to_database(df):
     is_successful = True
     try:
+        print("Start load_dataframe_to_database")
         # Map dataframe columns to database columns
         df_mapped = df.rename(
             columns={
@@ -36,4 +37,5 @@ def load_dataframe_to_database(df):
         is_successful = False
         print(f"Error occured while loading dataframe into database: {e}")
     finally:
+        print("End load_dataframe_to_database")
         return is_successful

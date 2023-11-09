@@ -2,31 +2,41 @@ import pandas as pd
 
 
 def merge_technical_fundamental_data(technical_df, fundamental_df):
+    print("Start merge_technical_fundamental_data")
     sp500_df = pd.DataFrame()
     try:
         sp500_df = pd.merge(technical_df, fundamental_df, on=["Date", "Symbol"])
     except Exception as e:
         print(f"Error occured while merging technical and fundamental dataframes: {e}")
-    return sp500_df
+    finally:
+        print("End merge_technical_fundamental_data")
+        return sp500_df
 
 
 def set_date_as_index(df):
     try:
+        print("Start set_date_as_index")
         df = df.set_index(["Date"])
     except Exception as e:
         print(f"Error occured while setting date column as index: {e}")
-    return df
+    finally:
+        print("End set_date_as_index")
+        return df
 
 
 def reset_index(df):
     try:
+        print("Start reset_index")
         df.reset_index(inplace=True)
     except Exception as e:
         print(f"Error occured while resetting dataframe index: {e}")
-    return df
+    finally:
+        print("End reset_index")
+        return df
 
 
 def change_column_datatypes(sp500_df):
+    print("Start change_column_datatypes")
     try:
         sp500_df["Basic EPS"] = sp500_df["Basic EPS"].astype("float64")
         sp500_df["Net Income"] = sp500_df["Net Income"].astype("float64")
@@ -43,10 +53,13 @@ def change_column_datatypes(sp500_df):
         )
     except Exception as e:
         print(f"Error while converting data types of columns: {e}")
-    return sp500_df
+    finally:
+        print("End change_column_datatypes")
+        return sp500_df
 
 
 def reorder_columns(sp500_df):
+    print("Start reorder_columns")
     try:
         sp500_df = sp500_df[
             [
@@ -70,20 +83,28 @@ def reorder_columns(sp500_df):
         ]
     except Exception as e:
         print(f"Error while reordering columns: {e}")
-    return sp500_df
+    finally:
+        print("End reorder_columns")
+        return sp500_df
 
 
 def drop_null_values(df):
+    print("Start drop_null_values")
     try:
         df.dropna(inplace=True)
     except Exception as e:
         print(f"Error while dropping null values: {e}")
-    return df
+    finally:
+        print("End drop_null_values")
+        return df
 
 
 def drop_column(df, column_name):
+    print("Start drop_column")
     try:
         df.drop(columns=column_name, inplace=True)
     except Exception as e:
         print(f"Error while dropping column {column_name}: {e}")
-    return df
+    finally:
+        print("End drop_column")
+        return df
