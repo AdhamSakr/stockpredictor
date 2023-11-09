@@ -1,19 +1,36 @@
-from extract_data import extract_technical_data, extract_fundamental_data
-from transform_data import transform_technical_data, transform_fundamental_data
-from load_data import load_data_to_database
+import datetime
+from extract_data import (
+    extract_technical_data,
+    extract_historical_fundamental_data,
+    extract_yesterdays_fundamental_data,
+)
+from transform_data import (
+    merge_technical_fundamental_data,
+    set_date_as_index,
+    change_column_datatypes,
+    drop_null_values,
+)
+from load_data import load_dataframe_to_database
 
-# Example stock symbol and date range
-symbol = "AAPL"
-start_date = "2022-01-01"
-end_date = "2023-01-01"
 
-# Extract data
-stock_data = extract_technical_data(symbol, start_date, end_date)
-fundamental_data = extract_fundamental_data(symbol)
+if __name__ == "__main__":
+    date_today = str(datetime.date.today())
+    date_from_2_years = str(datetime.date.today() - datetime.timedelta(days=2 * 365))
+    date_yesterday = str(datetime.date.today() - datetime.timedelta(days=1))
 
-# Transform data
-transformed_stock_data = transform_technical_data(stock_data)
-transformed_fundamental_data = transform_fundamental_data(fundamental_data)
+    # Extract historical data
+    technical_df = extract_technical_data(date_from_2_years, date_today)
+    fundamental_df = extract_historical_fundamental_data(date_from_2_years, date_today)
 
-# Load data to database
-load_data_to_database(transformed_stock_data, "stock_data.csv")
+    # Extract yesterday's data
+    # techincal_df = extract_technical_data(date_yesterday, date_today)
+    # fundamental_df = extract_yesterdays_fundamental_data(date_yesterday)
+
+    # Transform data
+    sp500_df = merge_technical_fundamental_data(technical_df, fundamental_df)
+    sp500_df = set_date_as_index(sp500_df)
+    sp500_df = change_column_datatypes(sp500_df)
+    sp500_df = drop_null_values(sp500_df)
+
+    # Load data to database
+    load_dataframe_to_database(sp500_df)
