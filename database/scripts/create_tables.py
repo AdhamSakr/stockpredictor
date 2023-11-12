@@ -6,7 +6,7 @@ if __name__ == "__main__":
         logging.basicConfig(level=logging.DEBUG)
 
         # connect to database
-        connection = sqlite3.connect("sp500_db")
+        connection = sqlite3.connect("../data/sp500_db")
         logging.debug("Connected to database successfully")
 
         # drop any previous sp500 table

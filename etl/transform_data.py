@@ -24,6 +24,28 @@ def set_date_as_index(df):
         return df
 
 
+def change_index_to_date_column(df):
+    try:
+        print("Start change_index_to_date_column")
+        df.rename(columns={"index": "Date"}, inplace=True)
+    except Exception as e:
+        print(f"Error occured while changing index to date column: {e}")
+    finally:
+        print("End change_index_to_date_column")
+        return df
+
+
+def change_date_column_type(df):
+    try:
+        print("Start change_date_column_type")
+        df["Date"] = pd.to_datetime(df["Date"])
+    except Exception as e:
+        print(f"Error occured while changing date column from object to datetime: {e}")
+    finally:
+        print("End change_date_column_type")
+        return df
+
+
 def reset_index(df):
     try:
         print("Start reset_index")

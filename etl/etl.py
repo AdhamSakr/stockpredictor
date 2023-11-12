@@ -2,11 +2,10 @@ import datetime
 from extract_data import (
     extract_technical_data,
     extract_historical_fundamental_data,
-    extract_yesterdays_fundamental_data,
+    extract_fundamental_data,
 )
 from transform_data import (
     merge_technical_fundamental_data,
-    set_date_as_index,
     change_column_datatypes,
     drop_null_values,
 )
@@ -19,16 +18,15 @@ if __name__ == "__main__":
     date_yesterday = str(datetime.date.today() - datetime.timedelta(days=1))
 
     # Extract historical data
-    technical_df = extract_technical_data(date_from_2_years, date_today)
-    fundamental_df = extract_historical_fundamental_data(date_from_2_years, date_today)
+    # technical_df = extract_technical_data(date_from_2_years, date_today)
+    # fundamental_df = extract_historical_fundamental_data(date_from_2_years, date_today)
 
     # Extract yesterday's data
-    # techincal_df = extract_technical_data(date_yesterday, date_today)
-    # fundamental_df = extract_yesterdays_fundamental_data(date_yesterday)
+    technical_df = extract_technical_data(date_yesterday, date_today)
+    fundamental_df = extract_fundamental_data(date_yesterday)
 
     # Transform data
     sp500_df = merge_technical_fundamental_data(technical_df, fundamental_df)
-    sp500_df = set_date_as_index(sp500_df)
     sp500_df = change_column_datatypes(sp500_df)
     sp500_df = drop_null_values(sp500_df)
 

@@ -1,6 +1,10 @@
 import pandas as pd
 import yfinance as yf
-from transform_data import reset_index
+from transform_data import (
+    reset_index,
+    change_index_to_date_column,
+    change_date_column_type,
+)
 
 # Fundamental data columns to be selected
 selected_income_statement_columns = [
@@ -29,6 +33,7 @@ def extract_technical_data(start_date, end_date):
         technical_df = reset_index(technical_df)
     except Exception as e:
         print(f"Error retrieving data for {stock}: {e}")
+        pass
     finally:
         print("End extract_technical_data")
         return technical_df
@@ -38,8 +43,8 @@ def extract_historical_fundamental_data(start_date, end_date):
     print("Start extract_historical_fundamental_data")
     sp500_stocks = get_sp500_list()
     fundamental_df = pd.DataFrame()
-    try:
-        for stock in sp500_stocks:
+    for stock in sp500_stocks:
+        try:
             stock_ticker = yf.Ticker(stock)
             # Get quarterly income statement
             quarterly_income_statement = stock_ticker.quarterly_incomestmt.transpose()
@@ -68,24 +73,25 @@ def extract_historical_fundamental_data(start_date, end_date):
                 & (stock_fundamental_data.index <= end_date)
             ]
             fundamental_df = pd.concat([fundamental_df, stock_fundamental_data])
+        except Exception as e:
+            print(f"Error retrieving data for {stock}: {e}")
+            pass  # Ignore error as some stocks have missing data
 
-        # Rename index to be "Date" then convert it to a normal column as it has duplicates
-        fundamental_df = reset_index(fundamental_df)
-        fundamental_df.rename(columns={"index": "Date"}, inplace=True)
-        fundamental_df["Date"] = pd.to_datetime(fundamental_df["Date"])
-    except Exception as e:
-        print(f"Error retrieving data for {stock}: {e}")
-    finally:
-        print("End extract_historical_fundamental_data")
-        return fundamental_df
+    # Rename index to be "Date" then convert it to a normal column as it has duplicates
+    fundamental_df = reset_index(fundamental_df)
+    fundamental_df = change_index_to_date_column(fundamental_df)
+    fundamental_df = change_date_column_type(fundamental_df)
+
+    print("End extract_historical_fundamental_data")
+    return fundamental_df
 
 
-def extract_yesterdays_fundamental_data(date):
-    print("Start extract_yesterdays_fundamental_data")
+def extract_fundamental_data(date):
+    print("Start extract_fundamental_data")
     sp500_stocks = get_sp500_list()
-    yesterday_fundamental_df = pd.DataFrame()
-    try:
-        for stock in sp500_stocks:
+    fundamental_df = pd.DataFrame()
+    for stock in sp500_stocks:
+        try:
             stock_ticker = yf.Ticker(stock)
             # Get quarterly income statement
             quarterly_income_statement = (
@@ -114,15 +120,16 @@ def extract_yesterdays_fundamental_data(date):
             data["Symbol"] = stock
             data["Date"] = date
             # Concat to the final dataframe
-            yesterday_fundamental_df = pd.concat([yesterday_fundamental_df, data])
+            fundamental_df = pd.concat([fundamental_df, data])
+        except Exception as e:
+            print(f"Error retrieving data for {stock}: {e}")
+            pass  # Ignore error as some stocks have missing data
 
-        # Remove old Date index as it will be replaced with yesterday's date through the loop
-        yesterday_fundamental_df.reset_index(inplace=True, drop=True)
-    except Exception as e:
-        print(f"Error retrieving data for {stock}: {e}")
-    finally:
-        print("End extract_yesterdays_fundamental_data")
-        return yesterday_fundamental_df
+    # Remove old Date index as it will be replaced with yesterday's date through the loop
+    fundamental_df.reset_index(inplace=True, drop=True)
+    fundamental_df = change_date_column_type(fundamental_df)
+    print("End extract_fundamental_data")
+    return fundamental_df
 
 
 def get_sp500_list():
