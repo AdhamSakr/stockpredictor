@@ -1,10 +1,15 @@
-from sqlalchemy import create_engine
+from pymongo import MongoClient
 
 
 def load_dataframe_to_database(df):
     is_successful = True
     try:
         print("Start load_dataframe_to_database")
+        connection_string = "mongodb+srv://AdhamSakr:EDsxIryI4nhgtAHc@cluster0.mdltzjn.mongodb.net/?retryWrites=true&w=majority"
+        client = MongoClient(connection_string)
+        db = client.sp500_db
+        collection = db.sp500
+
         # Map dataframe columns to database columns
         df_mapped = df.rename(
             columns={
@@ -28,12 +33,11 @@ def load_dataframe_to_database(df):
             }
         )
 
-        # Create a SQLite database engine
-        database_path = "../database/data/sp500_db"
-        engine = create_engine(f"sqlite:///{database_path}")
-        table_name = "sp500"
-        # Save the DataFrame to the SQLite table
-        df_mapped.to_sql(table_name, con=engine, index=False, if_exists="append")
+        # Convert DataFrame to a list of dictionaries
+        data_dict = df_mapped.to_dict(orient="records")
+
+        # Insert documents into the MongoDB collection
+        collection.insert_many(data_dict)
     except Exception as e:
         is_successful = False
         print(f"Error occured while loading dataframe into database: {e}")

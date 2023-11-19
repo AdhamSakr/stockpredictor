@@ -1,1 +1,2 @@
-database/data/
+etl/Dockerfile
+docker-compose.yml

@@ -31,4 +31,5 @@ if __name__ == "__main__":
     sp500_df = drop_null_values(sp500_df)
 
     # Load data to database
-    load_dataframe_to_database(sp500_df)
+    is_data_load_successful = load_dataframe_to_database(sp500_df)
+    print(f"Data load success: {is_data_load_successful}")
