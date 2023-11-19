@@ -1,0 +1,7 @@
+version: '3'
+
+services:
+  etl:
+      image: adhamsakr/stockpredictor-etl:latest
+      ports:
+        - "6001:6001"
