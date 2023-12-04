@@ -46,22 +46,22 @@ def extract_historical_fundamental_data(start_date, end_date):
     for stock in sp500_stocks:
         try:
             stock_ticker = yf.Ticker(stock)
-            # Get quarterly income statement
-            quarterly_income_statement = stock_ticker.quarterly_incomestmt.transpose()
-            # Get quarterly balance sheet
-            quarterly_balance_sheet = stock_ticker.quarterly_balance_sheet.transpose()
-            # Get quarterly cash flow
-            quarterly_cash_flow = stock_ticker.quarterly_cashflow.transpose()
+            # Get historical income statement
+            income_statement = stock_ticker.income_stmt.transpose()
+            # Get historical balance sheet
+            balance_sheet = stock_ticker.balance_sheet.transpose()
+            # Get historical cash flow
+            cash_flow = stock_ticker.cash_flow.transpose()
             # Merge the different fundamental data sources
             stock_fundamental_data = pd.merge(
-                quarterly_income_statement[selected_income_statement_columns],
-                quarterly_balance_sheet[selected_balance_sheet_columns],
+                income_statement[selected_income_statement_columns],
+                balance_sheet[selected_balance_sheet_columns],
                 left_index=True,
                 right_index=True,
             )
             stock_fundamental_data = pd.merge(
                 stock_fundamental_data,
-                quarterly_cash_flow[selected_cash_flow_columns],
+                cash_flow[selected_cash_flow_columns],
                 left_index=True,
                 right_index=True,
             )

@@ -14,12 +14,12 @@ from load_data import load_dataframe_to_database
 
 if __name__ == "__main__":
     date_today = str(datetime.date.today())
-    date_from_2_years = str(datetime.date.today() - datetime.timedelta(days=2 * 365))
+    date_from_4_years = str(datetime.date.today() - datetime.timedelta(days=4 * 365))
     date_yesterday = str(datetime.date.today() - datetime.timedelta(days=1))
 
     # Extract historical data
-    # technical_df = extract_technical_data(date_from_2_years, date_today)
-    # fundamental_df = extract_historical_fundamental_data(date_from_2_years, date_today)
+    # technical_df = extract_technical_data(date_from_4_years, date_today)
+    # fundamental_df = extract_historical_fundamental_data(date_from_4_years, date_today)
 
     # Extract yesterday's data
     technical_df = extract_technical_data(date_yesterday, date_today)
