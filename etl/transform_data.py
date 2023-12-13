@@ -80,36 +80,6 @@ def change_column_datatypes(sp500_df):
         return sp500_df
 
 
-def reorder_columns(sp500_df):
-    print("Start reorder_columns")
-    try:
-        sp500_df = sp500_df[
-            [
-                "Symbol",
-                "Open",
-                "High",
-                "Low",
-                "Adj Close",
-                "Volume",
-                "Basic EPS",
-                "Net Income",
-                "Total Revenue",
-                "Total Expenses",
-                "Total Debt",
-                "Total Capitalization",
-                "Total Assets",
-                "Free Cash Flow",
-                "Capital Expenditure",
-                "Close",
-            ]
-        ]
-    except Exception as e:
-        print(f"Error while reordering columns: {e}")
-    finally:
-        print("End reorder_columns")
-        return sp500_df
-
-
 def drop_null_values(df):
     print("Start drop_null_values")
     try:
