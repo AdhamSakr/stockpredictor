@@ -1,7 +1,7 @@
 import pandas as pd
 
 from data_retrieval import get_data_from_database
-from model import predict_next_30_days
+from svr_model import predict_next_30_days
 from plotting import plot_prediction
 
 

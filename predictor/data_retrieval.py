@@ -17,7 +17,6 @@ def get_data_from_database(stock_ticker):
         df = drop_symbol_column(df)
         df = convert_date_to_index(df)
         df = drop_weakly_correlated_columns(df)
-        df = scale_data(df)
     except Exception as e:
         print(f"Error while getting data from database: {e}")
     finally:
@@ -37,20 +36,11 @@ def convert_date_to_index(df):
 
 
 def drop_weakly_correlated_columns(df):
-    threshold = 0.5
+    threshold = 0.4
     target_column = "close"
     correlation_coefficients = df.corr()[target_column]
     columns_to_drop = correlation_coefficients[
         abs(correlation_coefficients) < threshold
     ].index
     df = df.drop(columns=columns_to_drop)
-    return df
-
-
-def scale_data(df):
-    for column in df.columns:
-        if column != "close":
-            df[column] = (df[column] - df[column].min()) / (
-                df[column].max() - df[column].min()
-            )
     return df

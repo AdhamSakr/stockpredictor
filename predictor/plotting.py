@@ -7,7 +7,7 @@ def plot_prediction(hist_df, pred_df):
         # Plotting
         plt.figure(figsize=(10, 5))
         plt.plot(hist_df.index, hist_df["close"], label="Historical", color="blue")
-        plt.plot(pred_df.index, pred_df["close"], label="Prediction", color="red")
+        plt.plot(pred_df.index, pred_df["close_pred"], label="Prediction", color="red")
 
         # Customize the plot
         plt.title("Plotting historical and predicted data")
