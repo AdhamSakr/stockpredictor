@@ -29,6 +29,7 @@ if __name__ == "__main__":
                 print("Invalid S&P 500 stock ticker")
 
         df = get_data_from_database(user_stock_ticker)
+        df.sort_index(inplace=True)
         df_pred = predict_next_30_days(df)
         plot_prediction(df, df_pred)
     except Exception as e:

@@ -36,7 +36,7 @@ def convert_date_to_index(df):
 
 
 def drop_weakly_correlated_columns(df):
-    threshold = 0.4
+    threshold = 0.5
     target_column = "close"
     correlation_coefficients = df.corr()[target_column]
     columns_to_drop = correlation_coefficients[
