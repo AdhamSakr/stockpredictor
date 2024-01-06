@@ -6,7 +6,7 @@ To run ETL Airflow Automation:
 2- Navigate to "airflow" folder
 3- In the terminal run: docker compose up
 4- In a web browser, navigate to "http://localhost:8080/" (username: airflow, password: airflow)
-5- To stop the docker image, in a new terminal run: docker compose down -v --remove-orphans
+5- To stop the docker image, in a new terminal run: docker compose down
 6- Another way is to install Docker extension for VS Code, and right click on the docker-compose.yaml file to start or stop.
 
 To run the predictor:
